@@ -1,0 +1,24 @@
+version: '3.2'
+services:
+  mariadb:
+    container_name: kumholight-mariadb-dev
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+    image: mariadb:latest
+    ports:
+      - '${MARIADB_PORT}:3306'
+    volumes:
+      - '/var/lib/mysql'
+      # - "./mariadb-volume:/var/lib/mysql"
+    command: 'mysqld --innodb-flush-method=fsync --innodb-use-native-aio=0'
+  redis:
+    container_name: kumholight-redis-dev
+    restart: on-failure
+    image: redis:6.0.8
+    ports:
+      - '${REDIS_PORT}:6379'
+networks:
+  default:
+    name: '${NETWORK_NAME}'
